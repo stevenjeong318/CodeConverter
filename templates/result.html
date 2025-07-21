@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code converter!</title>
+    <style>
+        .home-button {
+            width: 100%;
+            height: 10%;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .drop1,
+        .drop2 {
+            width: 49.5%;
+            height: 20%;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .input-code,
+        .output-code {
+            width: 100%;
+            height: 30%;
+            margin: 10px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+
+        #input-code,
+        #output-code {
+            width: 80vw;
+            height: 300px;
+
+        }
+
+        .submit-button {
+            width: 100%;
+            height: 10%;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .home-button {
+            width: 100%;
+            height: 10%;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .drop1,
+        .drop2 {
+            width: 49.5%;
+            height: 20%;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .input-code,
+        .output-code {
+            width: 100%;
+            height: 30%;
+            margin: 10px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+
+        #input-code,
+        #output-code {
+            width: 80vw;
+            height: 300px;
+
+        }
+
+        .copy-button {
+            width: 100%;
+            height: 10%;
+            margin: 10px;
+            text-align: center;
+        }
+    </style>
+
+    {% if bool %}
+    <script>
+        //pop-up if input and output are same
+        //put script tag in head to check variable before result.html is loaded
+        //reload index.html (endpoint /)
+        window.onload = function () {
+            alert("You cannot convert into same language!");
+            window.location.href = "/";
+        };
+    </script>
+    {% endif %}
+
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="home-button">
+            <button id="home">Home</button>
+        </div>
+        <form method="POST" action="/">
+            <div class="dropdown">
+                <div class="drop1">
+                    <label for="dropdown1">Input Language:</label>
+                    <select id="dropdown1" name="dropdown1">
+                        <option value="Python">Python</option>
+                        <option value="C++">C++</option>
+                        <option value="Java">Java</option>
+                        <option value="Javascript">Javascript</option>
+                    </select>
+                </div>
+                <div class="drop2">
+                    <label for="dropdown2">Output Language:</label>
+                    <select id="dropdown2" name="dropdown2">
+                        <option value="Python">Python</option>
+                        <option value="C++">C++</option>
+                        <option value="Java">Java</option>
+                        <option value="Javascript">Javascript</option>
+                    </select>
+                </div>
+            </div>
+            <div class="loading-spinner"></div>
+            <div class="textarea-container">
+                <div class="input-code">
+                    <textarea id="input-code" name="input-code">{{ input_code }}</textarea>
+                </div>
+                <div class="output-code">
+                    <textarea id="output-code" readonly placeholder="Output code">{{ output_code }}</textarea>
+                </div>
+            </div>
+            <div class="copy-button">
+                <button id="copy">Copy code!</button>
+            </div>
+        </form>
+
+    </div>
+    <script>
+        //update dropdown value of result.html, get values from app.py
+        var dropdown1Value = "{{ in_opt }}";
+        var dropdown2Value = "{{ out_opt }}";
+        document.getElementById("dropdown1").value = dropdown1Value;
+        document.getElementById("dropdown2").value = dropdown2Value;
+
+
+        //reload index.html (endpoint /)if home button clicked
+        document.getElementById("home").addEventListener("click", function () {
+            window.location.href = "/";
+        });
+
+
+        //Copy code
+        //Function to copy textarea content to clipboard and change button text
+        function copyText(event) {
+            event.preventDefault();
+
+
+            // Get the textarea element by its ID
+            var textarea = document.getElementById("output-code");
+
+            // Select the text inside the textarea
+            textarea.select();
+
+            // Copy the selected text to the clipboard
+            document.execCommand("copy");
+
+            // Change button text to "Copied"
+            var copyButton = document.getElementById("copy");
+            copyButton.innerText = "Copied";
+
+            // Reset button text after 5 seconds
+            setTimeout(function () {
+                copyButton.innerText = "Copy Text";
+            }, 5000);
+
+        }
+
+        // Add function copyText click event listener to the button
+        var copyButton = document.getElementById("copy");
+        copyButton.addEventListener("click", copyText);
+
+    </script>
+</body>
+
+</html>

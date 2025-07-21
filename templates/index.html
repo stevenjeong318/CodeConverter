@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Converter!</title>
+    <!--below stylesheet is for spinner-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .home-button {
+            width: 100%;
+            height: 10%;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .drop1,
+        .drop2 {
+            width: 49.5%;
+            height: 20%;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .output-code {
+            position: relative;
+        }
+
+        .input-code,
+        .output-code {
+            width: 100%;
+            height: 30%;
+            margin: 10px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+
+        #input-code,
+        #output-code {
+            width: 80vw;
+            height: 300px;
+            overflow-y: auto;
+
+        }
+
+        .submit-button {
+            width: 100%;
+            height: 10%;
+            margin: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="home-button">
+            <button id="home">Home</button>
+        </div>
+        <form method="POST" action="/done">
+            <div class="dropdown">
+                <div class="drop1">
+                    <label for="dropdown1">Input Language:</label>
+                    <select id="dropdown1" name="dropdown1">
+                        <option value="Python">Python</option>
+                        <option value="C++">C++</option>
+                        <option value="Java">Java</option>
+                        <option value="Javascript">Javascript</option>
+                    </select>
+                </div>
+                <div class="drop2">
+                    <label for="dropdown2">Output Language:</label>
+                    <select id="dropdown2" name="dropdown2">
+                        <option value="Python">Python</option>
+                        <option value="C++">C++</option>
+                        <option value="Java">Java</option>
+                        <option value="Javascript">Javascript</option>
+                    </select>
+                </div>
+            </div>
+            <div class="textarea-container">
+                <div class="input-code">
+                    <input type="file" id="fileInput" style="display:none;" />
+                    <textarea id="input-code"
+                        placeholder="Enter input code or Upload the code (.py, .java, .cpp, .js) by clicking the box or dragging file on to it"
+                        name="input-code"></textarea>
+                </div>
+                <div class="output-code">
+                    <textarea id="output-code" readonly placeholder="Output code"></textarea>
+                    <div class="loading-spinner" style="display: none;">
+                        <i class="fa fa-spinner fa-spin"></i> Loading...
+                    </div>
+                </div>
+            </div>
+            <div class="submit-button">
+                <button id="submit" type="submit">Convert!</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function () {
+            // Show the loading spinner when the form is submitted
+            document.querySelector('.loading-spinner').style.display = 'block';
+        });
+
+        // Assuming you are using an asynchronous request (e.g., AJAX) to handle form submission
+        // Hide the spinner when the response is received (adjust this logic based on your implementation)
+        function handleResponse(response) {
+            // Process the response here
+
+            // Hide the loading spinner after processing the response
+            document.querySelector('.loading-spinner').style.display = 'none';
+        }
+
+
+
+        //reload index.html when home button clicked
+        document.getElementById("home").addEventListener("click", function () {
+            window.location.reload();
+        });
+
+        //allow file upload on input code
+        const fileInput = document.getElementById('fileInput');
+        const textarea = document.getElementById('input-code');
+
+        // Handle file drop event
+        textarea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            const file = event.dataTransfer.files[0];
+
+            // Check if the file has a valid extension
+            if (isFileValid(file)) {
+                // Read the file contents
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Set the textarea value to the file contents
+                    textarea.value = e.target.result;
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Invalid file type. Only .py and .java files are allowed.');
+            }
+        });
+
+        // Prevent default behavior for drag and drop events
+        textarea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+        });
+
+        textarea.addEventListener('dragenter', (event) => {
+            event.preventDefault();
+        });
+
+        // Open file dialog when textarea is clicked
+        textarea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Handle file selection using the file input
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            // Check if the file has a valid extension
+            if (isFileValid(file)) {
+                // Read the file contents
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Set the textarea value to the file contents
+                    textarea.value = e.target.result;
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Invalid file type. Only .py and .java files are allowed.');
+            }
+        });
+
+        // Function to check if the file has a valid extension
+        function isFileValid(file) {
+            const allowedExtensions = ['.py', '.java', '.cpp', '.js'];
+            const fileName = file.name;
+            const fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
+
+            return allowedExtensions.includes('.' + fileExtension.toLowerCase());
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

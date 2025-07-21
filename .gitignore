@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+
+# VSCode settings
+.vscode/
+
+# MacOS files
+.DS_Store
+
+# Python virtual environment folder
+venv/
+env/
+
+
+*.pyc
+*.sqlite3
+*.log
+*.zip
+*.mp4
+*.mov
+*.png
+*.jpg
+*.ipynb_checkpoints
+node_modules/.env
